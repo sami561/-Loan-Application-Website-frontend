@@ -9,6 +9,7 @@ pipeline {
 
     stages {
         stage('Checkout') {
+            agent any
             steps {
                 echo "Getting source code"
                 checkout scm
