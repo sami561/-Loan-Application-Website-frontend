@@ -43,7 +43,7 @@ pipeline {
 
     post {
         failure {
-            emailext subject: 'Build Failure: ${currentBuild.fullDisplayName}',
+            emailext subject: 'Build Failure: front-pfa',
                       body: 'The pipeline failed to build. Please check the Jenkins console output for more details.',
                       recipientProviders: [developers()],
                       to: 'semiayachi.contact@gmail.com'
