@@ -22,7 +22,7 @@ pipeline {
         }
         stage('Build'){
             steps {
-                sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/front-pfa::$BUILD_ID ./docker/frontend/Dockerfile .'
+                sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/front-pfa::$BUILD_ID  .'
             }
         }
         
