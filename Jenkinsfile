@@ -23,19 +23,19 @@ pipeline {
         }
         stage('Build'){
             steps {
-                sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/front-pfa::$BUILD_ID  .'
+                sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/front-pfa  .'
             }
         }
         
         stage('Deliver'){
             steps {
-                sh 'docker push $DOCKERHUB_CREDENTIALS_USR/front-pfa::$BUILD_ID'
+                sh 'docker push $DOCKERHUB_CREDENTIALS_USR/front-pfa'
             }
         }
 
         stage('Cleanup') {
             steps {
-                sh 'docker rmi $DOCKERHUB_CREDENTIALS_USR/front-pfa::$BUILD_ID'
+                sh 'docker rmi $DOCKERHUB_CREDENTIALS_USR/front-pfa'
                 sh 'docker logout'
             }
         }
