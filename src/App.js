@@ -16,7 +16,8 @@ import Monthly from "scenes/monthly";
 import Breakdown from "scenes/breakdown";
 import Admin from "scenes/admin";
 import Performance from "scenes/performance";
-import Login from "scenes/login";
+
+import Auth from "scenes/login";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -27,11 +28,8 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Routes>
-            <Route path="/" element={<Login />} />
-            <Route
-              path="/login"
-              element={<Navigate to="/dashboard" replace />}
-            />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/" element={<Navigate to="/auth" replace />} />
             <Route element={<Layout />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/products" element={<Products />} />
