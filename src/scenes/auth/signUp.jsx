@@ -39,6 +39,7 @@ const SignUpForm = () => {
         email: data.email,
         password: data.password,
       });
+      toast.success("User registered successfully");
       console.log(response);
     } catch (error) {
       console.log(error.response?.data?.businessErrorDescription);

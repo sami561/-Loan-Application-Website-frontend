@@ -17,7 +17,7 @@ import Breakdown from "scenes/breakdown";
 import Admin from "scenes/admin";
 import Performance from "scenes/performance";
 import "react-toastify/dist/ReactToastify.css";
-import Auth from "scenes/login";
+import Auth from "scenes/auth";
 import { ToastContainer, toast } from "react-toastify";
 
 function App() {

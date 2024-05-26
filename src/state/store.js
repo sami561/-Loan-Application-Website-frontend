@@ -10,7 +10,6 @@ const store = configureStore({
   reducer: {
     global: globalReducer,
     [api.reducerPath]: api.reducer,
-    [apiSpring.reducerPath]: apiSpring.reducer,
   },
   middleware: (getDefault) => getDefault().concat(api.middleware),
 });
