@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import httpClient from "utils/apiMethods";
 import { toast } from "react-toastify";
+import { IconButton, InputAdornment } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+
 const signUpSchema = z.object({
   firstName: z.string().nonempty({ message: "First name is required" }),
   lastName: z.string().nonempty({ message: "Last name is required" }),
@@ -15,6 +18,11 @@ const signUpSchema = z.object({
 });
 
 const SignUpForm = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
   const {
     register,
     handleSubmit,
@@ -25,7 +33,7 @@ const SignUpForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await httpClient.post("api/v1/auth/register", {
+      const response = await httpClient.post("api/v1/auth/registerAdmin", {
         firstname: data.firstName,
         lastname: data.lastName,
         email: data.email,
@@ -47,7 +55,7 @@ const SignUpForm = () => {
           </h4>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form-group" style={{ padding: "10px" }}>
-              <input
+              <TextField
                 type="text"
                 {...register("firstName")}
                 className="form-style"
@@ -58,7 +66,7 @@ const SignUpForm = () => {
               <i className="input-icon uil uil-user"></i>
             </div>
             <div className="form-group" style={{ padding: "10px" }}>
-              <input
+              <TextField
                 type="text"
                 {...register("lastName")}
                 className="form-style"
@@ -69,7 +77,7 @@ const SignUpForm = () => {
               <i className="input-icon uil uil-user"></i>
             </div>
             <div className="form-group" style={{ padding: "10px" }}>
-              <input
+              <TextField
                 type="email"
                 {...register("email")}
                 className="form-style"
@@ -80,12 +88,25 @@ const SignUpForm = () => {
               <i className="input-icon uil uil-at"></i>
             </div>
             <div className="form-group" style={{ padding: "10px" }}>
-              <input
-                type="password"
+              <TextField
+                type={showPassword ? "text" : "password"}
                 {...register("password")}
                 className="form-style"
                 placeholder="Your Password"
                 autoComplete="off"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
               {errors.password && <span>{errors.password.message}</span>}
               <i className="input-icon uil uil-lock-alt"></i>
