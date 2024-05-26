@@ -1,6 +1,43 @@
+import React from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@mui/material";
+import httpClient from "utils/apiMethods";
+import { toast } from "react-toastify";
+const signUpSchema = z.object({
+  firstName: z.string().nonempty({ message: "First name is required" }),
+  lastName: z.string().nonempty({ message: "Last name is required" }),
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" }),
+});
 
 const SignUpForm = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(signUpSchema),
+  });
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await httpClient.post("api/v1/auth/register", {
+        firstname: data.firstName,
+        lastname: data.lastName,
+        email: data.email,
+        password: data.password,
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error.response?.data?.businessErrorDescription);
+      toast.error(error.response?.data?.businessErrorDescription);
+    }
+  };
+
   return (
     <div className="card-back">
       <div className="center-wrap">
@@ -8,56 +45,69 @@ const SignUpForm = () => {
           <h4 className="mb-4 pb-3" style={{ textAlign: "center" }}>
             Sign Up
           </h4>
-          <div className="form-group" style={{ padding: "10px" }}>
-            <input
-              type="text"
-              name="logname"
-              className="form-style"
-              placeholder="Your Full Name"
-              id="logname"
-              autoComplete="off"
-            />
-            <i className="input-icon uil uil-user"></i>
-          </div>
-          <div className="form-group " style={{ padding: "10px" }}>
-            <input
-              type="email"
-              name="logemail"
-              className="form-style"
-              placeholder="Your Email"
-              id="logemail"
-              autoComplete="off"
-            />
-            <i className="input-icon uil uil-at"></i>
-          </div>
-          <div className="form-group " style={{ padding: "10px" }}>
-            <input
-              type="password"
-              name="logpass"
-              className="form-style"
-              placeholder="Your Password"
-              id="logpass"
-              autoComplete="off"
-            />
-            <i className="input-icon uil uil-lock-alt"></i>
-          </div>
-          <div
-            style={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              justifyContent: "center",
-              marginTop: "30px",
-            }}
-          >
-            {" "}
-            <button href="#" className="btn mt-4">
-              submit
-            </button>
-          </div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="form-group" style={{ padding: "10px" }}>
+              <input
+                type="text"
+                {...register("firstName")}
+                className="form-style"
+                placeholder="Your first Name"
+                autoComplete="off"
+              />
+              {errors.firstName && <span>{errors.firstName.message}</span>}
+              <i className="input-icon uil uil-user"></i>
+            </div>
+            <div className="form-group" style={{ padding: "10px" }}>
+              <input
+                type="text"
+                {...register("lastName")}
+                className="form-style"
+                placeholder="Your last Name"
+                autoComplete="off"
+              />
+              {errors.lastName && <span>{errors.lastName.message}</span>}
+              <i className="input-icon uil uil-user"></i>
+            </div>
+            <div className="form-group" style={{ padding: "10px" }}>
+              <input
+                type="email"
+                {...register("email")}
+                className="form-style"
+                placeholder="Your Email"
+                autoComplete="off"
+              />
+              {errors.email && <span>{errors.email.message}</span>}
+              <i className="input-icon uil uil-at"></i>
+            </div>
+            <div className="form-group" style={{ padding: "10px" }}>
+              <input
+                type="password"
+                {...register("password")}
+                className="form-style"
+                placeholder="Your Password"
+                autoComplete="off"
+              />
+              {errors.password && <span>{errors.password.message}</span>}
+              <i className="input-icon uil uil-lock-alt"></i>
+            </div>
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "30px",
+              }}
+            >
+              <button type="submit" variant="contained" className="btn mt-4">
+                Submit
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   );
 };
+
 export default SignUpForm;

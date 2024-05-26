@@ -16,8 +16,9 @@ import Monthly from "scenes/monthly";
 import Breakdown from "scenes/breakdown";
 import Admin from "scenes/admin";
 import Performance from "scenes/performance";
-
+import "react-toastify/dist/ReactToastify.css";
 import Auth from "scenes/login";
+import { ToastContainer, toast } from "react-toastify";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -46,6 +47,7 @@ function App() {
           </Routes>
         </ThemeProvider>
       </BrowserRouter>
+      <ToastContainer />
     </div>
   );
 }
