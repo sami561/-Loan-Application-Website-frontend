@@ -1,18 +1,34 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { TextField, IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useLoginMutation } from "state/authApi"; // Adjust this path to where your authApi file is located
+import { useLoginMutation } from "state/authApi"; // Make sure this path is correct
 import { toast } from "react-toastify";
-import { useNavigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+// Define the validation schema using zod
+const schema = z.object({
+  email: z
+    .string()
+    .email({ message: "Invalid email format" })
+    .nonempty({ message: "Email is required" }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters long" })
+    .nonempty({ message: "Password is required" }),
+});
 
 const LoginForm = () => {
-  let navigation = useNavigation();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [login, { isLoading }] = useLoginMutation();
 
@@ -20,7 +36,7 @@ const LoginForm = () => {
     try {
       await login(data).unwrap();
       toast.success("Logged in successfully");
-      navigation("/dashboard");
+      navigate("/dashboard"); // Redirect to dashboard after successful login
     } catch (err) {
       toast.error(`Login failed: ${err.data?.message || "Unknown error"}`);
       console.error("Login failed:", err);
@@ -32,10 +48,13 @@ const LoginForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="center-wrap">
         <div className="section text-center">
           <h4 className="mb-4 pb-3">Log In</h4>
-          <div className="form-group" style={{ padding: "10px" }}>
+          <div
+            className="form-group"
+            style={{ padding: "10px", paddingBottom: "10px" }}
+          >
             <TextField
               type="email"
-              {...register("email", { required: "Email is required" })}
+              {...register("email")}
               className="form-style"
               placeholder="Your Email"
               autoComplete="off"
@@ -44,10 +63,13 @@ const LoginForm = () => {
               helperText={errors.email?.message}
             />
           </div>
-          <div className="form-group" style={{ padding: "10px" }}>
+          <div
+            className="form-group"
+            style={{ padding: "10px", paddingTop: "20px" }}
+          >
             <TextField
               type={showPassword ? "text" : "password"}
-              {...register("password", { required: "Password is required" })}
+              {...register("password")}
               className="form-style"
               placeholder="Your Password"
               autoComplete="off"

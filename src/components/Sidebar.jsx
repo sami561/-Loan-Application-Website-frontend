@@ -32,15 +32,20 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
 import profileImage from "assets/profile.jpeg";
-
+import DomainIcon from "@mui/icons-material/Domain";
 const navItems = [
   {
     text: "Dashboard",
     icon: <HomeOutlined />,
   },
+
   {
     text: "Client Facing",
     icon: null,
+  },
+  {
+    text: "Governorate",
+    icon: <DomainIcon />,
   },
   {
     text: "Products",
@@ -193,7 +198,7 @@ const Sidebar = ({
             </List>
           </Box>
 
-          <Box  bottom="1rem">
+          <Box bottom="1rem">
             <Divider />
             <FlexBetween textTransform="none" gap="1rem" m="1.5rem 2rem 0 3rem">
               <Box

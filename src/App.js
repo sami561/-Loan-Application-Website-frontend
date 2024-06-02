@@ -16,6 +16,7 @@ import Monthly from "scenes/monthly";
 import Breakdown from "scenes/breakdown";
 import Admin from "scenes/admin";
 import Performance from "scenes/performance";
+import Governorate from "scenes/Governorate";
 import Auth from "scenes/auth";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -94,6 +95,12 @@ function App() {
                 path="/performance"
                 element={
                   token ? <Performance /> : <Navigate to="/auth" replace />
+                }
+              />
+              <Route
+                path="/governorate"
+                element={
+                  token ? <Governorate /> : <Navigate to="/auth" replace />
                 }
               />
             </Route>
