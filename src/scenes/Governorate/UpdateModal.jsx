@@ -28,7 +28,7 @@ const UpdateModal = ({ open, handleClose, row }) => {
           component="h2"
         ></Typography>
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          test
+          testing
         </Typography>
       </Box>
     </Modal>
