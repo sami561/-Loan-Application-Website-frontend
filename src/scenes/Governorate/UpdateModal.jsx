@@ -1,7 +1,8 @@
 import { Box, Modal, Typography } from "@mui/material";
 import React from "react";
 
-const UpdateModal = ({ open, handleClose }) => {
+const UpdateModal = ({ open, handleClose, row }) => {
+  console.log(row);
   return (
     <Modal
       open={open}
@@ -27,8 +28,7 @@ const UpdateModal = ({ open, handleClose }) => {
           component="h2"
         ></Typography>
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          Here you can place any content or forms needed for editing or
-          confirming deletion.
+          test
         </Typography>
       </Box>
     </Modal>

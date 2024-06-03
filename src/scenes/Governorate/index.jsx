@@ -15,9 +15,11 @@ const Governorate = () => {
   console.log(data);
   const [open, setOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
+  const [selectedRow, setSelectedRow] = useState(null);
 
   const handleOpen = (content) => {
     setModalContent(content);
+    setSelectedRow(content);
     setOpen(true);
   };
 
@@ -46,7 +48,7 @@ const Governorate = () => {
       headerName: "Edit",
       flex: 1,
       renderCell: (params) => (
-        <IconButton onClick={() => handleOpen(`Edit ID: ${params.row.id}`)}>
+        <IconButton onClick={() => handleOpen(`Edit ID: ${params.row}`)}>
           <EditIcon />
         </IconButton>
       ),
@@ -101,7 +103,7 @@ const Governorate = () => {
           columns={columns}
         />
       </Box>
-      <UpdateModal open={open} onClose={handleClose} />
+      <UpdateModal open={open} onClose={handleClose} row={selectedRow} />
     </Box>
   );
 };
