@@ -33,6 +33,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
 import profileImage from "assets/profile.jpeg";
 import DomainIcon from "@mui/icons-material/Domain";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import InventoryIcon from "@mui/icons-material/Inventory";
 const navItems = [
   {
     text: "Dashboard",
@@ -48,10 +51,22 @@ const navItems = [
     icon: <DomainIcon />,
   },
   {
+    text: "Bank",
+    icon: <AccountBalanceIcon />,
+  },
+  {
+    text: "request",
+    icon: <InsertDriveFileIcon />,
+  },
+  {
+    text: "creditType",
+    icon: <InventoryIcon />,
+  },
+  {
     text: "Products",
     icon: <ShoppingCartOutlined />,
   },
-  {
+  /*  {
     text: "Customers",
     icon: <Groups2Outlined />,
   },
@@ -62,7 +77,7 @@ const navItems = [
   {
     text: "Geography",
     icon: <PublicOutlined />,
-  },
+  }, */
   {
     text: "Sales",
     icon: null,

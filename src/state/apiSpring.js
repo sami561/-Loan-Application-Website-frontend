@@ -24,7 +24,11 @@ export const apiSpring = createApi({
       query: () => "api/v1/gouvernorat/all",
       providesTags: ["Governorate"],
     }),
+    getBank: build.query({
+      query: () => "api/v1/bank/all",
+      providesTags: ["Bank"],
+    }),
   }),
 });
 
-export const { useGetGovernorateQuery } = apiSpring;
+export const { useGetGovernorateQuery, useGetBankQuery } = apiSpring;

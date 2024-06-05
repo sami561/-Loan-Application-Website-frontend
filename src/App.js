@@ -20,6 +20,9 @@ import Governorate from "scenes/Governorate";
 import Auth from "scenes/auth";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Bank from "scenes/Bank";
+import CreditType from "scenes/CreditType";
+import Request from "scenes/Request";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -102,6 +105,20 @@ function App() {
                 element={
                   token ? <Governorate /> : <Navigate to="/auth" replace />
                 }
+              />
+              <Route
+                path="/bank"
+                element={token ? <Bank /> : <Navigate to="/auth" replace />}
+              />
+              <Route
+                path="/creditType"
+                element={
+                  token ? <CreditType /> : <Navigate to="/auth" replace />
+                }
+              />
+              <Route
+                path="/request"
+                element={token ? <Request /> : <Navigate to="/auth" replace />}
               />
             </Route>
           </Routes>
