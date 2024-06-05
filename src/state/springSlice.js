@@ -5,6 +5,7 @@ export const springSlice = createSlice({
   initialState: {
     governorate: [],
     banks: [],
+    creditType: [],
   },
   reducers: {
     setGovernorate: (state, action) => {
@@ -12,6 +13,9 @@ export const springSlice = createSlice({
     },
     setBanks: (state, action) => {
       state.banks = action.payload;
+    },
+    setCreditType: (state, action) => {
+      state.creditType = action.payload;
     },
   },
 });

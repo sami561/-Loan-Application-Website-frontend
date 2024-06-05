@@ -28,7 +28,15 @@ export const apiSpring = createApi({
       query: () => "api/v1/bank/all",
       providesTags: ["Bank"],
     }),
+    getCreditType: build.query({
+      query: () => "api/v1/credit-types/getall",
+      providesTags: ["CreditType"],
+    }),
   }),
 });
 
-export const { useGetGovernorateQuery, useGetBankQuery } = apiSpring;
+export const {
+  useGetGovernorateQuery,
+  useGetBankQuery,
+  useGetCreditTypeQuery,
+} = apiSpring;
