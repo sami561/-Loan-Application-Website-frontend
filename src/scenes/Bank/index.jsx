@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, IconButton, useTheme } from "@mui/material";
+import { Box, IconButton, useTheme, Avatar, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useGetTransactionsQuery } from "state/api";
 import Header from "components/Header";
@@ -7,6 +7,9 @@ import DataGridCustomToolbar from "components/DataGridCustomToolbar";
 import { useGetBankQuery } from "state/apiSpring";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { Add, Refresh } from "@mui/icons-material";
+import AddModal from "./AddModal";
+
 const Bank = () => {
   const theme = useTheme();
 
@@ -14,17 +17,40 @@ const Bank = () => {
   const [pageSize, setPageSize] = useState(20);
   const [sort, setSort] = useState({});
   const [search, setSearch] = useState("");
-
+  const [openAdd, setOpenAdd] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-  const { data, isLoading } = useGetBankQuery();
+  const { data, isLoading, refetch } = useGetBankQuery();
   console.log(data);
-
+  const handelOpenAdd = () => {
+    setOpenAdd(true);
+  };
+  const handleCloseAdd = () => {
+    refetch();
+    setOpenAdd(false);
+  };
   const columns = [
+    {
+      field: "image",
+      headerName: "Image Bank",
+      flex: 0.25,
+      renderCell: (params) => {
+        console.log(params.value);
+        const newPath = params.value.replace("../frontend/public/", "/");
+        return (
+          <Avatar
+            src={newPath}
+            alt="Bank Image"
+            sx={{ width: 56, height: 56 }}
+          />
+        );
+      },
+    },
     {
       field: "id",
       headerName: "ID",
       flex: 0.25,
     },
+
     {
       field: "nom",
       headerName: "Name",
@@ -42,19 +68,24 @@ const Bank = () => {
     },
 
     {
-      field: "image",
-      headerName: "image Bank",
-      flex: 0.25,
-    },
-
-    {
       field: "gouvernorat",
       headerName: "# of gouvernorat",
       flex: 0.25,
       sortable: false,
     },
 
-    { field: "user", headerName: "# of agent", flex: 0.5 },
+    {
+      field: "agents",
+      headerName: "Agent Names",
+      flex: 0.5,
+      renderCell: (params) => {
+        // Concatenate all agent names, separated by a comma
+        const agentNames = params.value
+          .map((agent) => `${agent.firstname} ${agent.lastname}`)
+          .join(", ");
+        return <div>{agentNames || "No Agents"}</div>;
+      },
+    },
     {
       field: "edit",
       headerName: "Edit",
@@ -80,6 +111,16 @@ const Bank = () => {
   return (
     <Box m="1.5rem 2.5rem">
       <Header title="Banks" subtitle="Entire list of banks" />
+      <Box m="1rem" display="flex" justifyContent={"flex-end"}>
+        <Button
+          startIcon={<Add />}
+          variant="contained"
+          color="primary"
+          onClick={() => handelOpenAdd()}
+        >
+          add new Bank
+        </Button>
+      </Box>
       <Box
         height="80vh"
         sx={{
@@ -118,6 +159,7 @@ const Bank = () => {
           }}
         />
       </Box>
+      <AddModal open={openAdd} handleClose={handleCloseAdd} />
     </Box>
   );
 };
