@@ -9,6 +9,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Add, Refresh } from "@mui/icons-material";
 import AddModal from "./AddModal";
+import DeleteModal from "./DeleteModal";
+import UpdateModal from "./UpdateModal";
 
 const Bank = () => {
   const theme = useTheme();
@@ -18,8 +20,27 @@ const Bank = () => {
   const [sort, setSort] = useState({});
   const [search, setSearch] = useState("");
   const [openAdd, setOpenAdd] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [modalContent, setModalContent] = useState("");
+  const [open, setOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [selectedRowDelete, setSelectedRowDelete] = useState(null);
   const { data, isLoading, refetch } = useGetBankQuery();
+  const handleOpen = (content) => {
+    setModalContent(content);
+    setSelectedRow(content);
+    setOpen(true);
+  };
+  const handleOpenDelete = (content) => {
+    setModalContent(content);
+    setSelectedRowDelete(content);
+    setOpenDelete(true);
+  };
+  const handleCloseDelete = () => {
+    refetch();
+    setOpenDelete(false);
+  };
   console.log(data);
   const handelOpenAdd = () => {
     setOpenAdd(true);
@@ -28,6 +49,11 @@ const Bank = () => {
     refetch();
     setOpenAdd(false);
   };
+  const handleClose = () => {
+    refetch();
+    setOpen(false);
+  };
+
   const columns = [
     {
       field: "image",
@@ -91,7 +117,7 @@ const Bank = () => {
       headerName: "Edit",
       flex: 0.25,
       renderCell: (params) => (
-        <IconButton onClick={() => console.log("tee")}>
+        <IconButton onClick={() => handleOpen(params.row)}>
           <EditIcon />
         </IconButton>
       ),
@@ -101,7 +127,7 @@ const Bank = () => {
       headerName: "Delete",
       flex: 0.25,
       renderCell: (params) => (
-        <IconButton onClick={() => console.log("tee")}>
+        <IconButton onClick={() => handleOpenDelete(params.row.id)}>
           <DeleteIcon />
         </IconButton>
       ),
@@ -160,6 +186,12 @@ const Bank = () => {
         />
       </Box>
       <AddModal open={openAdd} handleClose={handleCloseAdd} />
+      <DeleteModal
+        open={openDelete}
+        handleClose={handleCloseDelete}
+        row={selectedRowDelete}
+      />
+      <UpdateModal open={open} handleClose={handleClose} row={selectedRow} />
     </Box>
   );
 };

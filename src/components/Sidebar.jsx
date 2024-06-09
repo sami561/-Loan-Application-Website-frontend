@@ -54,18 +54,11 @@ const navItems = [
     text: "Bank",
     icon: <AccountBalanceIcon />,
   },
-  {
-    text: "request",
-    icon: <InsertDriveFileIcon />,
-  },
-  {
-    text: "creditType",
-    icon: <InventoryIcon />,
-  },
-  {
+
+  /* {
     text: "Products",
     icon: <ShoppingCartOutlined />,
-  },
+  }, */
   /*  {
     text: "Customers",
     icon: <Groups2Outlined />,
@@ -83,6 +76,14 @@ const navItems = [
     icon: null,
   },
   {
+    text: "request",
+    icon: <InsertDriveFileIcon />,
+  },
+  {
+    text: "creditType",
+    icon: <InventoryIcon />,
+  },
+  /* {
     text: "Overview",
     icon: <PointOfSaleOutlined />,
   },
@@ -97,7 +98,7 @@ const navItems = [
   {
     text: "Breakdown",
     icon: <PieChartOutlined />,
-  },
+  }, */
   {
     text: "Management",
     icon: null,

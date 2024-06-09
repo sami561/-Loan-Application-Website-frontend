@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, IconButton, useTheme } from "@mui/material";
+import { Box, Button, IconButton, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useGetTransactionsQuery } from "state/api";
 import Header from "components/Header";
@@ -7,14 +7,36 @@ import DataGridCustomToolbar from "components/DataGridCustomToolbar";
 import { useGetBankQuery, useGetCreditTypeQuery } from "state/apiSpring";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { Add, Update } from "@mui/icons-material";
+import AddModal from "./AddModal";
+import UpdateModal from "./UpdateModal";
 const CreditType = () => {
   const theme = useTheme();
 
   const [search, setSearch] = useState("");
+  const [openAdd, setOpenAdd] = useState(false);
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
 
   const [searchInput, setSearchInput] = useState("");
-  const { data, isLoading } = useGetCreditTypeQuery();
+  const { data, isLoading, refetch } = useGetCreditTypeQuery();
+
   console.log(data);
+  const handleAddModal = () => {
+    setOpenAdd(true);
+  };
+  const handleUpdateModal = (row) => {
+    setSelectedRow(row);
+    setOpenUpdate(true);
+  };
+  const handleCloseAdd = () => {
+    refetch();
+    setOpenAdd(false);
+  };
+  const handleCloseUpdate = () => {
+    setOpenUpdate(false);
+    refetch();
+  };
 
   const columns = [
     {
@@ -56,7 +78,7 @@ const CreditType = () => {
       headerName: "Edit",
       flex: 0.25,
       renderCell: (params) => (
-        <IconButton onClick={() => console.log("tee")}>
+        <IconButton onClick={() => handleUpdateModal(params.row)}>
           <EditIcon />
         </IconButton>
       ),
@@ -76,6 +98,16 @@ const CreditType = () => {
   return (
     <Box m="1.5rem 2.5rem">
       <Header title="CreditTypes" subtitle="Entire list of CreditType" />
+      <Box m="1rem" display="flex" justifyContent={"flex-end"}>
+        <Button
+          startIcon={<Add />}
+          variant="contained"
+          color="primary"
+          onClick={() => handleAddModal()}
+        >
+          add new loan type
+        </Button>
+      </Box>
       <Box
         height="80vh"
         sx={{
@@ -114,6 +146,12 @@ const CreditType = () => {
           }}
         />
       </Box>
+      <AddModal open={openAdd} handleClose={handleCloseAdd} />
+      <UpdateModal
+        open={openUpdate}
+        handleClose={handleCloseUpdate}
+        row={selectedRow}
+      />
     </Box>
   );
 };
