@@ -36,7 +36,7 @@ const UpdateModal = ({ open, handleClose, row }) => {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      const response = await httpClient.put("api/v1/credit-types/update", {
+      const response = await httpClient.put("api/v1/credit-types/", {
         name: data.name,
         interestRate: data.interestRate,
         maxAmount: data.maxAmount,

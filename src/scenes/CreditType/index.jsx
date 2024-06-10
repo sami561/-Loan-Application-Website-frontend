@@ -10,6 +10,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { Add, Update } from "@mui/icons-material";
 import AddModal from "./AddModal";
 import UpdateModal from "./UpdateModal";
+import DeleteModal from "./DeleteModal";
 const CreditType = () => {
   const theme = useTheme();
 
@@ -17,8 +18,9 @@ const CreditType = () => {
   const [openAdd, setOpenAdd] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
-
+  const [openDelete, setOpenDelete] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [selectedRowDelete, setSelectedRowDelete] = useState(null);
   const { data, isLoading, refetch } = useGetCreditTypeQuery();
 
   console.log(data);
@@ -37,7 +39,14 @@ const CreditType = () => {
     setOpenUpdate(false);
     refetch();
   };
-
+  const handleDeleteModal = (row) => {
+    setSelectedRowDelete(row);
+    setOpenDelete(true);
+  };
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+    refetch();
+  };
   const columns = [
     {
       field: "id",
@@ -88,7 +97,7 @@ const CreditType = () => {
       headerName: "Delete",
       flex: 0.25,
       renderCell: (params) => (
-        <IconButton onClick={() => console.log("tee")}>
+        <IconButton onClick={() => handleDeleteModal(params.row.id)}>
           <DeleteIcon />
         </IconButton>
       ),
@@ -151,6 +160,11 @@ const CreditType = () => {
         open={openUpdate}
         handleClose={handleCloseUpdate}
         row={selectedRow}
+      />
+      <DeleteModal
+        open={openDelete}
+        handleClose={handleCloseDelete}
+        row={selectedRowDelete}
       />
     </Box>
   );
