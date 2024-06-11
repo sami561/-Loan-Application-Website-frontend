@@ -10,10 +10,14 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridCheckCircleIcon } from "@mui/x-data-grid";
 import Header from "components/Header";
-
-import { useGetBankQuery, useGetGovernorateQuery } from "state/apiSpring";
+import CloseIcon from "@mui/icons-material/Close";
+import {
+  useGetBankQuery,
+  useGetGovernorateQuery,
+  useGetRequestQuery,
+} from "state/apiSpring";
 import { Add, Delete, Update } from "@mui/icons-material";
 import DataGridCustomToolbar from "components/DataGridCustomToolbar";
 
@@ -31,7 +35,8 @@ const Request = () => {
   const [open, setOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [selectedRowDelete, setSelectedRowDelete] = useState(null);
-  const { data, isLoading, refetch } = useGetBankQuery();
+  /*   const { data, isLoading, refetch } = useGetBankQuery(); */
+  const { data, isLoading, refetch } = useGetRequestQuery();
   const handleOpen = (content) => {
     setModalContent(content);
     setSelectedRow(content);
@@ -58,11 +63,18 @@ const Request = () => {
     refetch();
     setOpen(false);
   };
+  const handleApprove = (row) => {
+    // logic to handle approval
+  };
+
+  const handleReject = (row) => {
+    // logic to handle rejection
+  };
 
   const columns = [
     {
-      field: "image",
-      headerName: "Image Bank",
+      field: "file",
+      headerName: "Request file",
       flex: 0.25,
       renderCell: (params) => {
         console.log(params.value);
@@ -71,7 +83,7 @@ const Request = () => {
           <Avatar
             src={newPath}
             alt="Bank Image"
-            sx={{ width: 56, height: 56 }}
+            sx={{ width: 40, height: 40, borderRadius: "10px" }}
           />
         );
       },
@@ -83,65 +95,75 @@ const Request = () => {
     },
 
     {
-      field: "nom",
-      headerName: "Name",
-      flex: 0.25,
-    },
-    {
-      field: "contactEmail",
-      headerName: "contact Email",
-      flex: 0.25,
-    },
-    {
-      field: "contactPhone",
-      headerName: "contact phone",
+      field: "periode",
+      headerName: "periode",
       flex: 0.25,
     },
 
     {
-      field: "gouvernorat",
-      headerName: "# of gouvernorat",
+      field: "status",
+      headerName: "status",
       flex: 0.25,
       sortable: false,
     },
+    {
+      field: "creditType",
+      headerName: "credit Type",
+      flex: 0.25,
+    },
+    {
+      field: "user.firstname",
+      headerName: "User Names",
+      flex: 0.5,
+      sortable: false,
+    },
+    {
+      field: "bank",
+      headerName: "bank Name",
+      flex: 0.5,
+      sortable: false,
+    },
+    {
+      field: "devis",
+      headerName: "quote",
+      flex: 0.5,
+    },
+    {
+      field: "requestDate",
+      headerName: "request Date",
+      flex: 0.5,
+    },
 
     {
-      field: "agents",
-      headerName: "Agent Names",
+      field: "actions",
+      headerName: "Actions",
       flex: 0.5,
       renderCell: (params) => {
-        // Concatenate all agent names, separated by a comma
-        const agentNames = params.value
-          .map((agent) => `${agent.firstname} ${agent.lastname}`)
-          .join(", ");
-        return <div>{agentNames || "No Agents"}</div>;
+        return (
+          <Box display="flex" justifyContent="space-around">
+            <IconButton
+              onClick={() => handleApprove(params.row)}
+              color="primary"
+              aria-label="approve"
+            >
+              <GridCheckCircleIcon />
+            </IconButton>
+            <IconButton
+              onClick={() => handleReject(params.row)}
+              color="error"
+              aria-label="reject"
+            >
+              <CloseIcon />
+            </IconButton>
+          </Box>
+        );
       },
-    },
-    {
-      field: "edit",
-      headerName: "Edit",
-      flex: 0.25,
-      renderCell: (params) => (
-        <IconButton onClick={() => handleOpen(params.row)}>
-          <EditIcon />
-        </IconButton>
-      ),
-    },
-    {
-      field: "delete",
-      headerName: "Delete",
-      flex: 0.25,
-      renderCell: (params) => (
-        <IconButton onClick={() => handleOpenDelete(params.row.id)}>
-          <DeleteIcon />
-        </IconButton>
-      ),
     },
   ];
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="Banks" subtitle="Entire list of banks" />
+      <Header title="Request" subtitle="Entire list of Requests" />
       <Box m="1rem" display="flex" justifyContent={"flex-end"}>
         <Button
           startIcon={<Add />}
@@ -149,7 +171,7 @@ const Request = () => {
           color="primary"
           onClick={() => handelOpenAdd()}
         >
-          add new Bank
+          add new Request
         </Button>
       </Box>
       <Box
