@@ -20,6 +20,9 @@ import {
 } from "state/apiSpring";
 import { Add, Delete, Update } from "@mui/icons-material";
 import DataGridCustomToolbar from "components/DataGridCustomToolbar";
+import { toast } from "react-toastify";
+import httpClient from "utils/apiMethods";
+import AddModal from "./AddModal";
 
 const Request = () => {
   const theme = useTheme();
@@ -63,12 +66,25 @@ const Request = () => {
     refetch();
     setOpen(false);
   };
-  const handleApprove = (row) => {
-    // logic to handle approval
+  const handleApprove = async (row) => {
+    console.log(row);
+    try {
+      const response = await httpClient.put(`api/v1/request/approve/${row.id}`);
+      toast.success("Row updated");
+      console.log(response);
+    } catch (error) {
+      toast.error("error approving request");
+    }
   };
 
-  const handleReject = (row) => {
-    // logic to handle rejection
+  const handleReject = async (row) => {
+    try {
+      const response = await httpClient.put(`api/v1/request/decline/${row.id}`);
+      toast.success("Row updated");
+      console.log(response);
+    } catch (error) {
+      toast.error("error decline request");
+    }
   };
 
   const columns = [
@@ -212,6 +228,7 @@ const Request = () => {
           }}
         />
       </Box>
+      <AddModal open={openAdd} handleClose={handleCloseAdd} />
     </Box>
   );
 };
