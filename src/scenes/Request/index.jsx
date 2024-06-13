@@ -1,24 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  useTheme,
-  IconButton,
-  Modal,
-  Typography,
-  Button,
-  Avatar,
-} from "@mui/material";
+import { Box, useTheme, IconButton, Button, Avatar } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DataGrid, GridCheckCircleIcon } from "@mui/x-data-grid";
 import Header from "components/Header";
 import CloseIcon from "@mui/icons-material/Close";
-import {
-  useGetBankQuery,
-  useGetGovernorateQuery,
-  useGetRequestQuery,
-} from "state/apiSpring";
-import { Add, Delete, Update } from "@mui/icons-material";
+import { useGetRequestQuery } from "state/apiSpring";
+import { Add } from "@mui/icons-material";
 import DataGridCustomToolbar from "components/DataGridCustomToolbar";
 import { toast } from "react-toastify";
 import httpClient from "utils/apiMethods";
@@ -27,53 +15,36 @@ import AddModal from "./AddModal";
 const Request = () => {
   const theme = useTheme();
 
-  const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(20);
-  const [sort, setSort] = useState({});
   const [search, setSearch] = useState("");
   const [openAdd, setOpenAdd] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-  const [modalContent, setModalContent] = useState("");
+
   const [open, setOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(null);
-  const [selectedRowDelete, setSelectedRowDelete] = useState(null);
-  /*   const { data, isLoading, refetch } = useGetBankQuery(); */
+
   const { data, isLoading, refetch } = useGetRequestQuery();
-  const handleOpen = (content) => {
-    setModalContent(content);
-    setSelectedRow(content);
-    setOpen(true);
-  };
-  const handleOpenDelete = (content) => {
-    setModalContent(content);
-    setSelectedRowDelete(content);
-    setOpenDelete(true);
-  };
-  const handleCloseDelete = () => {
-    refetch();
-    setOpenDelete(false);
-  };
-  console.log(data);
+
   const handelOpenAdd = () => {
     setOpenAdd(true);
   };
+
   const handleCloseAdd = () => {
     refetch();
     setOpenAdd(false);
   };
+
   const handleClose = () => {
     refetch();
     setOpen(false);
   };
+
   const handleApprove = async (row) => {
-    console.log(row);
     try {
       const response = await httpClient.put(`api/v1/request/approve/${row.id}`);
       toast.success("Row updated");
-      console.log(response);
+      refetch();
     } catch (error) {
-      toast.error("error approving request");
+      toast.error("Error approving request");
     }
   };
 
@@ -81,9 +52,9 @@ const Request = () => {
     try {
       const response = await httpClient.put(`api/v1/request/decline/${row.id}`);
       toast.success("Row updated");
-      console.log(response);
+      refetch();
     } catch (error) {
-      toast.error("error decline request");
+      toast.error("Error declining request");
     }
   };
 
@@ -93,12 +64,11 @@ const Request = () => {
       headerName: "Request file",
       flex: 0.25,
       renderCell: (params) => {
-        console.log(params.value);
         const newPath = params.value.replace("../frontend/public/", "/");
         return (
           <Avatar
             src={newPath}
-            alt="Bank Image"
+            alt="Request File"
             sx={{ width: 40, height: 40, borderRadius: "10px" }}
           />
         );
@@ -109,85 +79,83 @@ const Request = () => {
       headerName: "ID",
       flex: 0.25,
     },
-
     {
       field: "periode",
-      headerName: "periode",
+      headerName: "Period",
       flex: 0.25,
     },
-
     {
       field: "status",
-      headerName: "status",
+      headerName: "Status",
       flex: 0.25,
       sortable: false,
     },
     {
-      field: "creditType",
-      headerName: "credit Type",
+      field: "creditType.name",
+      headerName: "Credit Type",
       flex: 0.25,
+      valueGetter: (params) => params.row.creditType?.name || "N/A",
     },
     {
-      field: "user.firstname",
+      field: "user.fullName",
       headerName: "User Names",
       flex: 0.5,
       sortable: false,
+      valueGetter: (params) => params.row.user?.fullName || "N/A",
     },
     {
-      field: "bank",
-      headerName: "bank Name",
+      field: "bank.nom",
+      headerName: "Bank Name",
       flex: 0.5,
       sortable: false,
+      valueGetter: (params) => params.row.bank?.nom || "N/A",
     },
     {
       field: "devis",
-      headerName: "quote",
+      headerName: "Quote",
       flex: 0.5,
     },
     {
       field: "requestDate",
-      headerName: "request Date",
+      headerName: "Request Date",
       flex: 0.5,
     },
-
     {
       field: "actions",
       headerName: "Actions",
       flex: 0.5,
-      renderCell: (params) => {
-        return (
-          <Box display="flex" justifyContent="space-around">
-            <IconButton
-              onClick={() => handleApprove(params.row)}
-              color="primary"
-              aria-label="approve"
-            >
-              <GridCheckCircleIcon />
-            </IconButton>
-            <IconButton
-              onClick={() => handleReject(params.row)}
-              color="error"
-              aria-label="reject"
-            >
-              <CloseIcon />
-            </IconButton>
-          </Box>
-        );
-      },
+      renderCell: (params) => (
+        <Box display="flex" justifyContent="space-around">
+          <IconButton
+            onClick={() => handleApprove(params.row)}
+            color="primary"
+            aria-label="approve"
+          >
+            <GridCheckCircleIcon />
+          </IconButton>
+          <IconButton
+            onClick={() => handleReject(params.row)}
+            color="error"
+            aria-label="reject"
+          >
+            <CloseIcon />
+          </IconButton>
+        </Box>
+      ),
     },
   ];
 
   return (
     <Box m="1.5rem 2.5rem">
       <Header title="Request" subtitle="Entire list of Requests" />
-      <Box m="1rem" display="flex" justifyContent={"flex-end"}>
+      <Box m="1rem" display="flex" justifyContent="flex-end">
         <Button
           startIcon={<Add />}
           variant="contained"
           color="primary"
-          onClick={() => handelOpenAdd()}
+          onClick={handelOpenAdd}
         >
-          add new Request
+          Add new Request
         </Button>
       </Box>
       <Box

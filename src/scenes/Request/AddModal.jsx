@@ -7,30 +7,26 @@ import {
   TextField,
   Button,
   Typography,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
 } from "@mui/material";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios"; // Use axios directly
+import axios from "axios";
 import { toast } from "react-toastify";
 import { useGetGovernorateQuery } from "state/apiSpring";
 import store from "state/store";
 
 // Define the validation schema using zod
 const formSchema = z.object({
-  periode: z.string().nonempty({ message: "periode is required" }),
-  RequestDate: z.string().nonempty({ message: "RequestDate is required" }),
-  bankId: z.string().nonempty({ message: "bankId is required" }),
-  userId: z.string().nonempty({ message: "userId is required" }),
-  creditTypeId: z.string().nonempty({ message: "bankId is required" }),
+  periode: z.string().nonempty({ message: "Periode is required" }),
+  RequestDate: z.string().nonempty({ message: "Request Date is required" }),
+  bankId: z.string().nonempty({ message: "Bank ID is required" }),
+  userId: z.string().nonempty({ message: "User ID is required" }),
+  creditTypeId: z.string().nonempty({ message: "Credit Type ID is required" }),
   file: z
     .any()
     .refine((files) => files.length === 1, { message: "File is required" }),
-  quote: z.string().nonempty({ message: "quote is required" }),
+  quote: z.string().nonempty({ message: "Quote is required" }),
 });
 
 const AddModal = ({ open, handleClose }) => {
@@ -48,6 +44,16 @@ const AddModal = ({ open, handleClose }) => {
     resolver: zodResolver(formSchema),
   });
 
+  const formatDateTime = (date) => {
+    const d = new Date(date);
+    const pad = (num) => num.toString().padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(
+      d.getDate()
+    )}T${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(
+      d.getSeconds()
+    )}.000+00:00`;
+  };
+
   const onSubmit = async (formData) => {
     console.log("🚀 ~ onSubmit ~ formData:", formData);
     try {
@@ -61,7 +67,7 @@ const AddModal = ({ open, handleClose }) => {
               bankId: formData.bankId,
               creditTypeId: formData.creditTypeId,
               periode: formData.periode,
-              RequestDate: formData.RequestDate,
+              RequestDate: formatDateTime(formData.RequestDate),
               userId: formData.userId,
               devis: formData.quote,
             }),
@@ -85,7 +91,7 @@ const AddModal = ({ open, handleClose }) => {
       );
 
       if (response.status === 200) {
-        toast.success("request added successfully!");
+        toast.success("Request added successfully!");
         handleClose();
         reset();
       }
@@ -133,7 +139,7 @@ const AddModal = ({ open, handleClose }) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextField
             type="number"
-            label="periode"
+            label="Periode"
             {...register("periode")}
             error={!!errors.periode}
             helperText={errors.periode?.message}
@@ -141,17 +147,20 @@ const AddModal = ({ open, handleClose }) => {
             margin="normal"
           />
           <TextField
-            type="Date"
-            label="RequestDate"
+            type="datetime-local"
+            label="Request Date"
             {...register("RequestDate")}
             error={!!errors.RequestDate}
             helperText={errors.RequestDate?.message}
             fullWidth
             margin="normal"
+            InputLabelProps={{
+              shrink: true,
+            }}
           />
           <TextField
             type="number"
-            label="quote"
+            label="Quote"
             {...register("quote")}
             error={!!errors.quote}
             helperText={errors.quote?.message}
@@ -159,7 +168,7 @@ const AddModal = ({ open, handleClose }) => {
             margin="normal"
           />
           <TextField
-            label="bankId"
+            label="Bank ID"
             {...register("bankId")}
             error={!!errors.bankId}
             helperText={errors.bankId?.message}
@@ -167,7 +176,7 @@ const AddModal = ({ open, handleClose }) => {
             margin="normal"
           />
           <TextField
-            label="userId"
+            label="User ID"
             {...register("userId")}
             error={!!errors.userId}
             helperText={errors.userId?.message}
@@ -175,14 +184,13 @@ const AddModal = ({ open, handleClose }) => {
             margin="normal"
           />
           <TextField
-            label="creditTypeId"
+            label="Credit Type ID"
             {...register("creditTypeId")}
             error={!!errors.creditTypeId}
             helperText={errors.creditTypeId?.message}
             fullWidth
             margin="normal"
           />
-
           <input
             type="file"
             {...register("file")}
