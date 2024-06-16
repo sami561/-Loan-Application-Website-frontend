@@ -28,6 +28,7 @@ import {
   TrendingUpOutlined,
   PieChartOutlined,
 } from "@mui/icons-material";
+import PersonIcon from "@mui/icons-material/Person";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
@@ -36,6 +37,7 @@ import DomainIcon from "@mui/icons-material/Domain";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import InventoryIcon from "@mui/icons-material/Inventory";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 const navItems = [
   {
     text: "Dashboard",
@@ -99,18 +101,28 @@ const navItems = [
     text: "Breakdown",
     icon: <PieChartOutlined />,
   }, */
+
   {
-    text: "Management",
+    text: "Users",
     icon: null,
+  },
+  {
+    text: "Manager",
+    icon: <AdminPanelSettingsIcon />,
   },
   {
     text: "Admin",
     icon: <AdminPanelSettingsOutlined />,
   },
   {
+    text: "client",
+    icon: <PersonIcon />,
+  },
+
+  /*   {
     text: "Performance",
     icon: <TrendingUpOutlined />,
-  },
+  }, */
 ];
 
 const Sidebar = ({

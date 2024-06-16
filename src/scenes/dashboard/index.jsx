@@ -20,11 +20,20 @@ import BreakdownChart from "components/BreakdownChart";
 import OverviewChart from "components/OverviewChart";
 import { useGetDashboardQuery } from "state/api";
 import StatBox from "components/StatBox";
+import {
+  useGetAdminCountQuery,
+  useGetCountManagerQuery,
+  useGetUserCountQuery,
+} from "state/apiSpring";
 
 const Dashboard = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const { data, isLoading } = useGetDashboardQuery();
+  const { data: adminCount, isLoading1 } = useGetAdminCountQuery();
+  const { data: userCount, isLoading2 } = useGetUserCountQuery();
+  const { data: managerCount, isLoading3 } = useGetCountManagerQuery();
+  console.log("🚀 ~ Dashboard ~ data:", data);
 
   const columns = [
     {
@@ -90,10 +99,10 @@ const Dashboard = () => {
       >
         {/* ROW 1 */}
         <StatBox
-          title="Total Customers"
-          value={data && data.totalCustomers}
+          title="Total client"
+          value={userCount}
           increase="+14%"
-          description="Since last month"
+          description="users"
           icon={
             <Email
               sx={{ color: theme.palette.secondary[300], fontSize: "26px" }}
@@ -101,8 +110,8 @@ const Dashboard = () => {
           }
         />
         <StatBox
-          title="Sales Today"
-          value={data && data.todayStats.totalSales}
+          title="Total banks"
+          value={adminCount}
           increase="+21%"
           description="Since last month"
           icon={
@@ -132,8 +141,8 @@ const Dashboard = () => {
           }
         />
         <StatBox
-          title="Yearly Sales"
-          value={data && data.yearlySalesTotal}
+          title="total managers"
+          value={managerCount}
           increase="+43%"
           description="Since last month"
           icon={

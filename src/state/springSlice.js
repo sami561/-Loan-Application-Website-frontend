@@ -6,6 +6,13 @@ export const springSlice = createSlice({
     governorate: [],
     banks: [],
     creditType: [],
+    admins: [],
+    users: [],
+    managers: [],
+    countAdmin: 0,
+    countUser: 0,
+    countManager: 0,
+    countAllUser: 0,
   },
   reducers: {
     setGovernorate: (state, action) => {
@@ -16,6 +23,24 @@ export const springSlice = createSlice({
     },
     setCreditType: (state, action) => {
       state.creditType = action.payload;
+    },
+    setAdmins: (state, action) => {
+      state.admins = action.payload;
+    },
+    setUsers: (state, action) => {
+      state.users = action.payload;
+    },
+    setManagers: (state, action) => {
+      state.managers = action.payload;
+    },
+    setCountAdmin: (state, action) => {
+      state.countAdmin = action.payload;
+    },
+    setCountUser: (state, action) => {
+      state.countUser = action.payload;
+    },
+    setCountManager: (state, action) => {
+      state.countManager = action.payload;
     },
   },
 });

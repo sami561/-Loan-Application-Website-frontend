@@ -23,6 +23,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Bank from "scenes/Bank";
 import CreditType from "scenes/CreditType";
 import Request from "scenes/Request";
+import User from "scenes/user/Index";
+import Manager from "scenes/manager/Index";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -119,6 +121,14 @@ function App() {
               <Route
                 path="/request"
                 element={token ? <Request /> : <Navigate to="/auth" replace />}
+              />
+              <Route
+                path="/client"
+                element={token ? <User /> : <Navigate to="/auth" replace />}
+              />
+              <Route
+                path="/manager"
+                element={token ? <Manager /> : <Navigate to="/auth" replace />}
               />
             </Route>
           </Routes>

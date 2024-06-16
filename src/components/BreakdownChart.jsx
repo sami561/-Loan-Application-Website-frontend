@@ -2,9 +2,13 @@ import React from "react";
 import { ResponsivePie } from "@nivo/pie";
 import { Box, Typography, useTheme } from "@mui/material";
 import { useGetSalesQuery } from "state/api";
+import { useGetallUserCountQuery } from "state/apiSpring";
 
 const BreakdownChart = ({ isDashboard = false }) => {
   const { data, isLoading } = useGetSalesQuery();
+  console.log("🚀 ~ BreakdownChart ~ data:", data.salesByCategory);
+  const { data: allUser, isLoading4 } = useGetallUserCountQuery();
+  console.log("🚀 ~ BreakdownChart ~ allUser:", allUser);
   const theme = useTheme();
 
   if (!data || isLoading) return "Loading...";
@@ -15,14 +19,12 @@ const BreakdownChart = ({ isDashboard = false }) => {
     theme.palette.secondary[300],
     theme.palette.secondary[500],
   ];
-  const formattedData = Object.entries(data.salesByCategory).map(
-    ([category, sales], i) => ({
-      id: category,
-      label: category,
-      value: sales,
-      color: colors[i],
-    })
-  );
+  const formattedData = Object.entries(allUser).map(([category, sales], i) => ({
+    id: category,
+    label: category,
+    value: sales,
+    color: colors[i],
+  }));
 
   return (
     <Box

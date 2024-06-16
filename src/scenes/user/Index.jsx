@@ -1,16 +1,16 @@
 import React from "react";
-import { Box, useTheme, IconButton } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
+
 import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
-import { Lock, LockOpen } from "@mui/icons-material";
 import Header from "components/Header";
 import CustomColumnMenu from "components/DataGridCustomColumnMenu";
-import { useGetAdminQuery } from "state/apiSpring";
+import { useGetAdminQuery, useGetUserQuery } from "state/apiSpring";
+import { Lock, LockOpen } from "@mui/icons-material";
 
-const Admin = () => {
+const User = () => {
   const theme = useTheme();
-  const { data, isLoading } = useGetAdminQuery();
+  const { data, isLoading } = useGetUserQuery();
   console.log("🚀 ~ Admin ~ data:", data);
-
   const handleEnableAccount = (id) => {
     // Implement your enable account logic here
     console.log(`Enabling account for ID: ${id}`);
@@ -20,7 +20,6 @@ const Admin = () => {
     // Implement your lock account logic here
     console.log(`Locking account for ID: ${id}`);
   };
-
   const columns = [
     {
       field: "id",
@@ -45,12 +44,12 @@ const Admin = () => {
     },
     {
       field: "accountLocked",
-      headerName: "Account Locked",
+      headerName: "account Locked",
       flex: 1,
     },
     {
       field: "enabled",
-      headerName: "Enabled",
+      headerName: "enabled",
       flex: 1,
     },
     {
@@ -75,7 +74,7 @@ const Admin = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="ADMINS" subtitle="Managing admins and list of admins" />
+      <Header title="Users" subtitle="Managing users and list of users" />
       <Box
         mt="40px"
         height="75vh"
@@ -118,4 +117,4 @@ const Admin = () => {
   );
 };
 
-export default Admin;
+export default User;

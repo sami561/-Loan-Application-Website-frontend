@@ -36,6 +36,34 @@ export const apiSpring = createApi({
       query: () => "api/v1/request/all",
       providesTags: ["Request"],
     }),
+    getAdmin: build.query({
+      query: () => "api/v1/users/admins",
+      providesTags: ["Admin"],
+    }),
+    getUser: build.query({
+      query: () => "api/v1/users/users",
+      providesTags: ["User"],
+    }),
+    getManeger: build.query({
+      query: () => "api/v1/users/Mangers",
+      providesTags: ["Maneger"],
+    }),
+    getUserCount: build.query({
+      query: () => "api/v1/users/count-users",
+      providesTags: ["User"],
+    }),
+    getAdminCount: build.query({
+      query: () => "api/v1/users/count-admins",
+      providesTags: ["Admin"],
+    }),
+    getCountManager: build.query({
+      query: () => "api/v1/users/count-managers",
+      providesTags: ["Maneger"],
+    }),
+    getallUserCount: build.query({
+      query: () => "api/v1/users/count-by-role",
+      providesTags: ["User"],
+    }),
   }),
 });
 
@@ -44,4 +72,11 @@ export const {
   useGetBankQuery,
   useGetCreditTypeQuery,
   useGetRequestQuery,
+  useGetAdminQuery,
+  useGetUserQuery,
+  useGetManegerQuery,
+  useGetUserCountQuery,
+  useGetAdminCountQuery,
+  useGetCountManagerQuery,
+  useGetallUserCountQuery,
 } = apiSpring;

@@ -1,16 +1,16 @@
 import React from "react";
-import { Box, useTheme, IconButton } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
+
 import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
-import { Lock, LockOpen } from "@mui/icons-material";
 import Header from "components/Header";
 import CustomColumnMenu from "components/DataGridCustomColumnMenu";
-import { useGetAdminQuery } from "state/apiSpring";
+import { useGetManegerQuery } from "state/apiSpring";
+import { Lock, LockOpen } from "@mui/icons-material";
 
-const Admin = () => {
+const Manager = () => {
   const theme = useTheme();
-  const { data, isLoading } = useGetAdminQuery();
+  const { data, isLoading } = useGetManegerQuery();
   console.log("🚀 ~ Admin ~ data:", data);
-
   const handleEnableAccount = (id) => {
     // Implement your enable account logic here
     console.log(`Enabling account for ID: ${id}`);
@@ -20,7 +20,6 @@ const Admin = () => {
     // Implement your lock account logic here
     console.log(`Locking account for ID: ${id}`);
   };
-
   const columns = [
     {
       field: "id",
@@ -38,44 +37,26 @@ const Admin = () => {
       flex: 1,
     },
     {
+      field: "accountLocked",
+      headerName: "account Locked",
+      flex: 1,
+    },
+    {
+      field: "enabled",
+      headerName: "enabled",
+      flex: 1,
+    },
+    {
       field: "roles",
       headerName: "Role",
       flex: 0.5,
       valueGetter: (params) => params.row.roles[0]?.name,
     },
-    {
-      field: "accountLocked",
-      headerName: "Account Locked",
-      flex: 1,
-    },
-    {
-      field: "enabled",
-      headerName: "Enabled",
-      flex: 1,
-    },
-    {
-      field: "actions",
-      headerName: "Actions",
-      type: "actions",
-      flex: 1,
-      getActions: (params) => [
-        <GridActionsCellItem
-          icon={<LockOpen />}
-          label="Enable Account"
-          onClick={() => handleEnableAccount(params.id)}
-        />,
-        <GridActionsCellItem
-          icon={<Lock />}
-          label="Lock Account"
-          onClick={() => handleLockAccount(params.id)}
-        />,
-      ],
-    },
   ];
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="ADMINS" subtitle="Managing admins and list of admins" />
+      <Header title="Users" subtitle="Managing users and list of users" />
       <Box
         mt="40px"
         height="75vh"
@@ -118,4 +99,4 @@ const Admin = () => {
   );
 };
 
-export default Admin;
+export default Manager;
