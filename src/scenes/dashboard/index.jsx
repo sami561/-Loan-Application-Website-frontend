@@ -24,6 +24,7 @@ import {
   useGetAdminCountQuery,
   useGetCountManagerQuery,
   useGetUserCountQuery,
+  useGetallUserCountQuery,
 } from "state/apiSpring";
 
 const Dashboard = () => {
@@ -33,6 +34,7 @@ const Dashboard = () => {
   const { data: adminCount, isLoading1 } = useGetAdminCountQuery();
   const { data: userCount, isLoading2 } = useGetUserCountQuery();
   const { data: managerCount, isLoading3 } = useGetCountManagerQuery();
+
   console.log("🚀 ~ Dashboard ~ data:", data);
 
   const columns = [

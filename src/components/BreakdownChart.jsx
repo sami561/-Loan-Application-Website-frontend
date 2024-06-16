@@ -6,7 +6,7 @@ import { useGetallUserCountQuery } from "state/apiSpring";
 
 const BreakdownChart = ({ isDashboard = false }) => {
   const { data, isLoading } = useGetSalesQuery();
-  console.log("🚀 ~ BreakdownChart ~ data:", data.salesByCategory);
+
   const { data: allUser, isLoading4 } = useGetallUserCountQuery();
   console.log("🚀 ~ BreakdownChart ~ allUser:", allUser);
   const theme = useTheme();
