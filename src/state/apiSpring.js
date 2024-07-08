@@ -64,6 +64,10 @@ export const apiSpring = createApi({
       query: () => "api/v1/users/count-by-role",
       providesTags: ["User"],
     }),
+    getBankCount: build.query({
+      query: () => "api/v1/bank/count",
+      providesTags: ["Bank"],
+    }),
   }),
 });
 
@@ -79,4 +83,5 @@ export const {
   useGetAdminCountQuery,
   useGetCountManagerQuery,
   useGetallUserCountQuery,
+  useGetBankCountQuery,
 } = apiSpring;

@@ -13,6 +13,7 @@ export const springSlice = createSlice({
     countUser: 0,
     countManager: 0,
     countAllUser: 0,
+    countBank: 0,
   },
   reducers: {
     setGovernorate: (state, action) => {
@@ -41,6 +42,9 @@ export const springSlice = createSlice({
     },
     setCountManager: (state, action) => {
       state.countManager = action.payload;
+    },
+    setCountBank: (state, action) => {
+      state.countBank = action.payload;
     },
   },
 });

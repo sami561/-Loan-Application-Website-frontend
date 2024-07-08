@@ -66,7 +66,7 @@ const Bank = () => {
           <Avatar
             src={newPath}
             alt="Bank Image"
-            sx={{ width: 56, height: 56 }}
+            sx={{ width: 40, height: 40, borderRadius: "10px" }}
           />
         );
       },

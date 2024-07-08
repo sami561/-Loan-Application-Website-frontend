@@ -1,19 +1,32 @@
 import React from "react";
 import { Box, useTheme, IconButton } from "@mui/material";
 import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
-import { Lock, LockOpen } from "@mui/icons-material";
+import { Lock, LockOpen, ResetTv } from "@mui/icons-material";
 import Header from "components/Header";
 import CustomColumnMenu from "components/DataGridCustomColumnMenu";
 import { useGetAdminQuery } from "state/apiSpring";
+import httpClient from "utils/apiMethods";
+import { toast } from "react-toastify";
 
 const Admin = () => {
   const theme = useTheme();
-  const { data, isLoading } = useGetAdminQuery();
+  const { data, isLoading, refetch } = useGetAdminQuery();
   console.log("🚀 ~ Admin ~ data:", data);
 
-  const handleEnableAccount = (id) => {
+  const handleEnableAccount = async (id) => {
     // Implement your enable account logic here
     console.log(`Enabling account for ID: ${id}`);
+    try {
+      const response = await httpClient.get(
+        `api/v1/auth/activate-admin?id=${id}`
+      );
+      toast.success("account added successfully");
+      console.log(response);
+    } catch (error) {
+      console.log(error.response?.data?.businessErrorDescription);
+      toast.error(error.response?.data?.businessErrorDescription);
+    }
+    refetch();
   };
 
   const handleLockAccount = (id) => {

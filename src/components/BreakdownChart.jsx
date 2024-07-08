@@ -5,13 +5,11 @@ import { useGetSalesQuery } from "state/api";
 import { useGetallUserCountQuery } from "state/apiSpring";
 
 const BreakdownChart = ({ isDashboard = false }) => {
-  const { data, isLoading } = useGetSalesQuery();
-
   const { data: allUser, isLoading4 } = useGetallUserCountQuery();
   console.log("🚀 ~ BreakdownChart ~ allUser:", allUser);
   const theme = useTheme();
 
-  if (!data || isLoading) return "Loading...";
+  if (!allUser || isLoading4) return "Loading...";
 
   const colors = [
     theme.palette.secondary[500],
@@ -131,9 +129,7 @@ const BreakdownChart = ({ isDashboard = false }) => {
             : "translate(-50%, -100%)",
         }}
       >
-        <Typography variant="h6">
-          {!isDashboard && "Total:"} ${data.yearlySalesTotal}
-        </Typography>
+        <Typography variant="h6">{!isDashboard && "Total:"}</Typography>
       </Box>
     </Box>
   );

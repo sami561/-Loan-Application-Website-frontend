@@ -7,6 +7,7 @@ import {
   PointOfSale,
   PersonAdd,
   Traffic,
+  AdminPanelSettingsOutlined,
 } from "@mui/icons-material";
 import {
   Box,
@@ -14,57 +15,69 @@ import {
   Typography,
   useTheme,
   useMediaQuery,
+  Avatar,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import BreakdownChart from "components/BreakdownChart";
 import OverviewChart from "components/OverviewChart";
 import { useGetDashboardQuery } from "state/api";
 import StatBox from "components/StatBox";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import {
   useGetAdminCountQuery,
+  useGetBankCountQuery,
   useGetCountManagerQuery,
+  useGetRequestQuery,
   useGetUserCountQuery,
   useGetallUserCountQuery,
+  useGetUserQuery,
 } from "state/apiSpring";
+import PersonIcon from "@mui/icons-material/Person";
 
 const Dashboard = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
-  const { data, isLoading } = useGetDashboardQuery();
+
   const { data: adminCount, isLoading1 } = useGetAdminCountQuery();
   const { data: userCount, isLoading2 } = useGetUserCountQuery();
   const { data: managerCount, isLoading3 } = useGetCountManagerQuery();
-
+  const { data: bankCount, isLoading4 } = useGetBankCountQuery();
+  const { data, isLoading } = useGetUserQuery();
+  console.log("🚀 ~ Dashboard ~ bankcount:", bankCount);
   console.log("🚀 ~ Dashboard ~ data:", data);
 
   const columns = [
     {
-      field: "_id",
+      field: "id",
       headerName: "ID",
       flex: 1,
     },
     {
-      field: "userId",
-      headerName: "User ID",
-      flex: 1,
-    },
-    {
-      field: "createdAt",
-      headerName: "CreatedAt",
-      flex: 1,
-    },
-    {
-      field: "products",
-      headerName: "# of Products",
+      field: "fullName",
+      headerName: "Full Name",
       flex: 0.5,
-      sortable: false,
-      renderCell: (params) => params.value.length,
     },
     {
-      field: "cost",
-      headerName: "Cost",
+      field: "email",
+      headerName: "Email",
       flex: 1,
-      renderCell: (params) => `$${Number(params.value).toFixed(2)}`,
+    },
+    {
+      field: "roles",
+      headerName: "Role",
+      flex: 0.5,
+      valueGetter: (params) => params.row.roles[0]?.name,
+    },
+    {
+      field: "accountLocked",
+      headerName: "account Locked",
+      flex: 1,
+    },
+    {
+      field: "enabled",
+      headerName: "enabled",
+      flex: 1,
     },
   ];
 
@@ -103,21 +116,21 @@ const Dashboard = () => {
         <StatBox
           title="Total client"
           value={userCount}
-          increase="+14%"
+          increase=""
           description="users"
           icon={
-            <Email
+            <PersonIcon
               sx={{ color: theme.palette.secondary[300], fontSize: "26px" }}
             />
           }
         />
         <StatBox
-          title="Total banks"
+          title="Total admin"
           value={adminCount}
-          increase="+21%"
-          description="Since last month"
+          increase=""
+          description=" admins"
           icon={
-            <PointOfSale
+            <AdminPanelSettingsOutlined
               sx={{ color: theme.palette.secondary[300], fontSize: "26px" }}
             />
           }
@@ -132,12 +145,12 @@ const Dashboard = () => {
           <OverviewChart view="sales" isDashboard={true} />
         </Box>
         <StatBox
-          title="Monthly Sales"
-          value={data && data.thisMonthStats.totalSales}
-          increase="+5%"
-          description="Since last month"
+          title="total banks"
+          value={bankCount}
+          increase=""
+          description="banks"
           icon={
-            <PersonAdd
+            <AccountBalanceIcon
               sx={{ color: theme.palette.secondary[300], fontSize: "26px" }}
             />
           }
@@ -145,10 +158,10 @@ const Dashboard = () => {
         <StatBox
           title="total managers"
           value={managerCount}
-          increase="+43%"
-          description="Since last month"
+          increase=""
+          description="managers"
           icon={
-            <Traffic
+            <AdminPanelSettingsIcon
               sx={{ color: theme.palette.secondary[300], fontSize: "26px" }}
             />
           }
@@ -186,8 +199,8 @@ const Dashboard = () => {
         >
           <DataGrid
             loading={isLoading || !data}
-            getRowId={(row) => row._id}
-            rows={(data && data.transactions) || []}
+            getRowId={(row) => row.id}
+            rows={data || []}
             columns={columns}
           />
         </Box>
@@ -199,7 +212,7 @@ const Dashboard = () => {
           borderRadius="0.55rem"
         >
           <Typography variant="h6" sx={{ color: theme.palette.secondary[100] }}>
-            Sales By Category
+            User by Category
           </Typography>
           <BreakdownChart isDashboard={true} />
           <Typography
@@ -207,8 +220,7 @@ const Dashboard = () => {
             fontSize="0.8rem"
             sx={{ color: theme.palette.secondary[200] }}
           >
-            Breakdown of real states and information via category for revenue
-            made for this year and total sales.
+            this chart represent how mush user we have by role
           </Typography>
         </Box>
       </Box>

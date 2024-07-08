@@ -106,7 +106,7 @@ const CreditType = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="CreditTypes" subtitle="Entire list of CreditType" />
+      <Header title="loan Types" subtitle="Entire list of loan Types" />
       <Box m="1rem" display="flex" justifyContent={"flex-end"}>
         <Button
           startIcon={<Add />}
