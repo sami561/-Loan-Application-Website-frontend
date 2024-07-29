@@ -57,22 +57,6 @@ const navItems = [
     icon: <AccountBalanceIcon />,
   },
 
-  /* {
-    text: "Products",
-    icon: <ShoppingCartOutlined />,
-  }, */
-  /*  {
-    text: "Customers",
-    icon: <Groups2Outlined />,
-  },
-  {
-    text: "Transactions",
-    icon: <ReceiptLongOutlined />,
-  },
-  {
-    text: "Geography",
-    icon: <PublicOutlined />,
-  }, */
   {
     text: "Sales",
     icon: null,
@@ -85,22 +69,6 @@ const navItems = [
     text: "creditType",
     icon: <InventoryIcon />,
   },
-  /* {
-    text: "Overview",
-    icon: <PointOfSaleOutlined />,
-  },
-  {
-    text: "Daily",
-    icon: <TodayOutlined />,
-  },
-  {
-    text: "Monthly",
-    icon: <CalendarMonthOutlined />,
-  },
-  {
-    text: "Breakdown",
-    icon: <PieChartOutlined />,
-  }, */
 
   {
     text: "Users",
@@ -118,11 +86,6 @@ const navItems = [
     text: "client",
     icon: <PersonIcon />,
   },
-
-  /*   {
-    text: "Performance",
-    icon: <TrendingUpOutlined />,
-  }, */
 ];
 
 const Sidebar = ({
@@ -226,7 +189,7 @@ const Sidebar = ({
             </List>
           </Box>
 
-          {/*  <Box bottom="1rem">
+          <Box bottom="1rem">
             <Divider />
             <FlexBetween textTransform="none" gap="1rem" m="1.5rem 2rem 0 3rem">
               <Box
@@ -260,7 +223,7 @@ const Sidebar = ({
                 }}
               />
             </FlexBetween>
-          </Box> */}
+          </Box>
         </Drawer>
       )}
     </Box>
