@@ -1,13 +1,13 @@
 // src/features/auth/authApi.js
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { setToken } from "./authSlice"; // Assuming you have an authSlice that handles the auth state
+import { setToken } from "./authSlice"; 
 
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8088/",
+    baseUrl: "http://localhost:3000/",
     prepareHeaders: (headers, { getState }) => {
-      const token = getState().auth.token; // Make sure this path matches where you store your token
+      const token = getState().auth.token;
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
@@ -18,7 +18,7 @@ export const authApi = createApi({
   endpoints: (build) => ({
     login: build.mutation({
       query: (credentials) => ({
-        url: "api/v1/auth/authenticate",
+        url: "/kamarket/auth/login",
         method: "POST",
         body: credentials,
       }),
@@ -26,7 +26,7 @@ export const authApi = createApi({
       onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
         try {
           const { data } = await queryFulfilled;
-          dispatch(setToken(data.token)); // Assuming the token is located directly in the response
+          dispatch(setToken(data.token)); 
         } catch (error) {
           console.error("Login failed:", error);
         }

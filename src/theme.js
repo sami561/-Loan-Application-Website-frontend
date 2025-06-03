@@ -1,138 +1,247 @@
-// color design tokens export
+// Enhanced color palette with better contrast and visual harmony
+export const kamiounColors = {
+  // Core brand colors
+  primary: "#0066CC", // More refined blue (better for accessibility)
+  primaryLight: "#4D9BF7", // Lighter variant
+  primaryDark: "#004A99", // Darker variant
+
+  secondary: "#FFC72C", // Vibrant but not harsh yellow
+  secondaryLight: "#FFE16B",
+  secondaryDark: "#E6B400",
+
+  // Extended palette
+  tertiary: "#00B4D8", // Cyan-blue (replaces tertiaryBlue)
+  accent: "#FF6B35", // Complementary orange for CTAs
+
+  // Neutrals
+  white: "#FFFFFF",
+  lightGray: "#F5F7FA", // Softer background
+  mediumGray: "#E1E5EB",
+  gray: "#A3A9B5",
+  darkGray: "#626E7A",
+  black: "#222222", // Softer than pure black
+
+  // Functional colors
+  success: "#4CAF50",
+  warning: "#FFB74D",
+  error: "#F44336",
+  info: "#2196F3",
+
+  // Backgrounds
+  background: "#F8FAFD", // Very light blue-gray
+  bg_grey: "#F0F2F5", // Slightly darker background
+  cardBg: "#FFFFFF",
+
+  // Text
+  textPrimary: "#2D3748", // High contrast
+  textSecondary: "#4A5568",
+  textDisabled: "#A0AEC0",
+};
+
+// Organized design tokens for systematic theming
 export const tokensDark = {
   grey: {
-    0: "#ffffff", // manually adjusted
-    10: "#f6f6f6", // manually adjusted
-    50: "#f0f0f0", // manually adjusted
-    100: "#e0e0e0",
-    200: "#c2c2c2",
-    300: "#a3a3a3",
-    400: "#858585",
-    500: "#666666",
-    600: "#525252",
-    700: "#3d3d3d",
-    800: "#292929",
-    900: "#141414",
-    1000: "#000000", // manually adjusted
+    0: kamiounColors.white,
+    10: kamiounColors.lightGray,
+    50: kamiounColors.background,
+    100: kamiounColors.mediumGray,
+    200: "#D1D5DB",
+    300: kamiounColors.gray,
+    400: "#8E9AAB",
+    500: "#6B7280",
+    600: kamiounColors.darkGray,
+    700: "#4B5563",
+    800: "#374151",
+    900: "#1F2937",
+    1000: kamiounColors.black,
   },
   primary: {
-    // blue
-    100: "#d3d4de",
-    200: "#a6a9be",
-    300: "#7a7f9d",
-    400: "#4d547d",
-    500: "#21295c",
-    600: "#191F45", // manually adjusted
-    700: "#141937",
-    800: "#0d1025",
-    900: "#070812",
+    100: kamiounColors.primaryLight,
+    200: "#7FB2F0",
+    300: "#66A4ED",
+    400: kamiounColors.primary,
+    500: "#005BB7",
+    600: "#004E9E",
+    700: "#004085",
+    800: "#00336C",
+    900: "#002653",
   },
   secondary: {
-    // yellow
-    50: "#f0f0f0", // manually adjusted
-    100: "#fff6e0",
-    200: "#ffedc2",
-    300: "#ffe3a3",
-    400: "#ffda85",
-    500: "#ffd166",
-    600: "#cca752",
-    700: "#997d3d",
-    800: "#665429",
-    900: "#332a14",
+    50: "#FFF9E6",
+    100: kamiounColors.secondaryLight,
+    200: "#FFD95C",
+    300: kamiounColors.secondary,
+    400: "#FFBF00",
+    500: "#E6B400",
+    600: "#CC9F00",
+    700: "#B38A00",
+    800: "#997500",
+    900: "#806000",
+  },
+  tertiary: {
+    100: "#80DFF2",
+    200: "#66D7EF",
+    300: "#4DCEEB",
+    400: kamiounColors.tertiary,
+    500: "#00A2C2",
+    600: "#008FAC",
+    700: "#007D96",
+    800: "#006A80",
+    900: "#00586A",
   },
 };
 
-// function that reverses the color palette
-function reverseTokens(tokensDark) {
-  const reversedTokens = {};
-  Object.entries(tokensDark).forEach(([key, val]) => {
-    const keys = Object.keys(val);
-    const values = Object.values(val);
-    const length = keys.length;
-    const reversedObj = {};
-    for (let i = 0; i < length; i++) {
-      reversedObj[keys[i]] = values[length - i - 1];
-    }
-    reversedTokens[key] = reversedObj;
-  });
-  return reversedTokens;
-}
-export const tokensLight = reverseTokens(tokensDark);
+// Light theme is now more intentionally designed rather than just reversed
+export const tokensLight = {
+  grey: {
+    0: kamiounColors.black,
+    10: "#1F2937",
+    50: "#374151",
+    100: "#4B5563",
+    200: "#6B7280",
+    300: kamiounColors.gray,
+    400: "#8E9AAB",
+    500: "#D1D5DB",
+    600: kamiounColors.mediumGray,
+    700: kamiounColors.lightGray,
+    800: kamiounColors.background,
+    900: kamiounColors.bg_grey,
+    1000: kamiounColors.white,
+  },
+  primary: {
+    100: "#002653",
+    200: "#00336C",
+    300: "#004085",
+    400: "#004E9E",
+    500: "#005BB7",
+    600: kamiounColors.primary,
+    700: "#66A4ED",
+    800: "#7FB2F0",
+    900: kamiounColors.primaryLight,
+  },
+  secondary: {
+    50: "#806000",
+    100: "#997500",
+    200: "#B38A00",
+    300: "#CC9F00",
+    400: "#E6B400",
+    500: kamiounColors.secondary,
+    600: "#FFBF00",
+    700: "#FFD95C",
+    800: kamiounColors.secondaryLight,
+    900: "#FFF9E6",
+  },
+};
 
-// mui theme settings
+// Enhanced theme settings with better typography and spacing
 export const themeSettings = (mode) => {
+  const colors = mode === "dark" ? tokensDark : tokensLight;
+
   return {
     palette: {
       mode: mode,
-      ...(mode === "dark"
-        ? {
-            // palette values for dark mode
-            primary: {
-              ...tokensDark.primary,
-              main: tokensDark.primary[400],
-              light: tokensDark.primary[400],
-            },
-            secondary: {
-              ...tokensDark.secondary,
-              main: tokensDark.secondary[300],
-            },
-            neutral: {
-              ...tokensDark.grey,
-              main: tokensDark.grey[500],
-            },
-            background: {
-              default: tokensDark.primary[600],
-              alt: tokensDark.primary[500],
-            },
-          }
-        : {
-            // palette values for light mode
-            primary: {
-              ...tokensLight.primary,
-              main: tokensDark.grey[50],
-              light: tokensDark.grey[100],
-            },
-            secondary: {
-              ...tokensLight.secondary,
-              main: tokensDark.secondary[600],
-              light: tokensDark.secondary[700],
-            },
-            neutral: {
-              ...tokensLight.grey,
-              main: tokensDark.grey[500],
-            },
-            background: {
-              default: tokensDark.grey[0],
-              alt: tokensDark.grey[50],
-            },
-          }),
+      primary: {
+        ...colors.primary,
+        main: colors.primary[400],
+        light: colors.primary[300],
+        dark: colors.primary[600],
+      },
+      secondary: {
+        ...colors.secondary,
+        main: colors.secondary[300],
+        light: colors.secondary[200],
+        dark: colors.secondary[500],
+      },
+      tertiary: {
+        ...colors.tertiary,
+        main: colors.tertiary?.[400] || kamiounColors.tertiary,
+      },
+      neutral: {
+        ...colors.grey,
+        main: colors.grey[500],
+      },
+      background: {
+        default: mode === "dark" ? colors.grey[900] : colors.grey[800],
+        paper: mode === "dark" ? colors.grey[800] : colors.grey[700],
+        alt: mode === "dark" ? colors.grey[800] : colors.grey[50],
+      },
+      text: {
+        primary: mode === "dark" ? colors.grey[100] : colors.grey[900],
+        secondary: mode === "dark" ? colors.grey[300] : colors.grey[700],
+        disabled: mode === "dark" ? colors.grey[500] : colors.grey[400],
+      },
+      error: {
+        main: kamiounColors.error,
+      },
+      warning: {
+        main: kamiounColors.warning,
+      },
+      success: {
+        main: kamiounColors.success,
+      },
+      info: {
+        main: kamiounColors.info,
+      },
     },
     typography: {
-      fontFamily: ["Inter", "sans-serif"].join(","),
-      fontSize: 12,
+      fontFamily: ['"Inter"', "sans-serif"].join(","),
+      htmlFontSize: 16,
       h1: {
-        fontFamily: ["Inter", "sans-serif"].join(","),
-        fontSize: 40,
+        fontSize: "2.5rem",
+        fontWeight: 700,
+        lineHeight: 1.2,
       },
       h2: {
-        fontFamily: ["Inter", "sans-serif"].join(","),
-        fontSize: 32,
+        fontSize: "2rem",
+        fontWeight: 700,
+        lineHeight: 1.3,
       },
       h3: {
-        fontFamily: ["Inter", "sans-serif"].join(","),
-        fontSize: 24,
+        fontSize: "1.75rem",
+        fontWeight: 600,
+        lineHeight: 1.3,
       },
       h4: {
-        fontFamily: ["Inter", "sans-serif"].join(","),
-        fontSize: 20,
+        fontSize: "1.5rem",
+        fontWeight: 600,
+        lineHeight: 1.4,
       },
       h5: {
-        fontFamily: ["Inter", "sans-serif"].join(","),
-        fontSize: 16,
+        fontSize: "1.25rem",
+        fontWeight: 500,
+        lineHeight: 1.4,
       },
       h6: {
-        fontFamily: ["Inter", "sans-serif"].join(","),
-        fontSize: 14,
+        fontSize: "1rem",
+        fontWeight: 500,
+        lineHeight: 1.5,
+      },
+      subtitle1: {
+        fontSize: "1rem",
+        fontWeight: 400,
+      },
+      body1: {
+        fontSize: "1rem",
+        lineHeight: 1.5,
+      },
+      button: {
+        fontWeight: 600,
+        textTransform: "none",
+      },
+    },
+    shape: {
+      borderRadius: 8,
+    },
+    spacing: 8,
+    transitions: {
+      duration: {
+        shortest: 150,
+        shorter: 200,
+        short: 250,
+        standard: 300,
+        complex: 375,
+        enteringScreen: 225,
+        leavingScreen: 195,
       },
     },
   };
