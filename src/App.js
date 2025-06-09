@@ -28,7 +28,7 @@ import Manager from "scenes/manager/Index";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
-  const token = useSelector((state) => state.auth.token); // Adjust according to your state structure
+  const token = useSelector((state) => state.auth.token);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
 
   return (

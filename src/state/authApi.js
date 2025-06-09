@@ -1,6 +1,6 @@
 // src/features/auth/authApi.js
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { setToken } from "./authSlice"; 
+import { setToken } from "./authSlice";
 
 export const authApi = createApi({
   reducerPath: "authApi",
@@ -18,7 +18,7 @@ export const authApi = createApi({
   endpoints: (build) => ({
     login: build.mutation({
       query: (credentials) => ({
-        url: "/kamarket/auth/login",
+        url: "/kamarket/auth/login/phone",
         method: "POST",
         body: credentials,
       }),
@@ -26,7 +26,7 @@ export const authApi = createApi({
       onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
         try {
           const { data } = await queryFulfilled;
-          dispatch(setToken(data.token)); 
+          dispatch(setToken(data.token));
         } catch (error) {
           console.error("Login failed:", error);
         }

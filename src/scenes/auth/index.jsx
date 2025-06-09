@@ -1,51 +1,40 @@
-import React, { useState } from "react";
-import "./LoginForm.css"; // Make sure to import the CSS stylesheet
-import LoginForm from "./login";
-import SignUpForm from "./signUp";
+import "./LoginForm.css";
+import Logo from "../../assets/kamioun-logo.png";
+import LoginForm from "./components/LoginForm";
+import RegisterForm from "./components/RegisterForm";
+import { useState } from "react";
 
-const Auth = () => {
-  const [isSignup, setIsSignup] = useState(false);
-
-  const toggleForm = () => setIsSignup(!isSignup);
+const LoginPage = () => {
+  const [isLogin, setIsLogin] = useState(true);
 
   return (
-    <div className="login-page">
-      <div className="login-section">
-        <div className="login-container">
-          <div className="login-row">
-            <div className="login-col text-center">
-              <div className="login-section text-center">
-                <h6
-                  className="mb-0 pb-3"
-                  style={{
-                    display: "block",
-                    textAlign: "center",
-                  }}
-                >
-                  <span onClick={!isSignup ? null : toggleForm}>Log In </span>
-                  <span onClick={isSignup ? null : toggleForm}>Sign Up</span>
-                </h6>
-                <input
-                  className="checkbox"
-                  type="checkbox"
-                  id="reg-log"
-                  name="reg-log"
-                  checked={isSignup}
-                  onChange={toggleForm}
-                />
-                <label htmlFor="reg-log"></label>
-                <div className="card-3d-wrap">
-                  <div className="card-3d-wrapper">
-                    {isSignup ? <SignUpForm /> : <LoginForm />}
-                  </div>
-                </div>
-              </div>
-            </div>
+    <div className="login-page-container">
+      <div className="login-box">
+        <div className="login-content">
+          <div className="logo-container">
+            <img src={Logo} alt="logo" className="logo-image" />
           </div>
+          <div className="auth-toggle">
+            <button
+              className={`toggle-button ${isLogin ? "active" : ""}`}
+              onClick={() => setIsLogin(true)}
+            >
+              Login
+            </button>
+            <button
+              className={`toggle-button ${!isLogin ? "active" : ""}`}
+              onClick={() => setIsLogin(false)}
+            >
+              Register
+            </button>
+          </div>
+          <div className="divider" />
+
+          {isLogin ? <LoginForm /> : <RegisterForm />}
         </div>
       </div>
     </div>
   );
 };
 
-export default Auth;
+export default LoginPage;
