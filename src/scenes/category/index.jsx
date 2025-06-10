@@ -22,7 +22,6 @@ const Category = () => {
   const [searchInput, setSearchInput] = useState("");
   const [selectedRowDelete, setSelectedRowDelete] = useState(null);
   const { data, isLoading, refetch } = useGetCategoryQuery();
-  console.log("🚀 ~ Category ~ data:", data);
 
   const handleAddModal = () => {
     setOpenAdd(true);
@@ -59,13 +58,17 @@ const Category = () => {
       headerName: "Image Bank",
       flex: 0.25,
       renderCell: (params) => {
-        console.log(params.value);
-        const newPath = params.value.replace("../frontend/public/", "/");
+        const imageUrl = `http://localhost:3000/kamarket/category/image${params.value}`;
+
         return (
           <Avatar
-            src={newPath}
+            src={imageUrl}
             alt="Bank Image"
             sx={{ width: 40, height: 40, borderRadius: "10px" }}
+            onError={(e) => {
+              e.target.src = "";
+              e.target.alt = "Image not available";
+            }}
           />
         );
       },
@@ -86,7 +89,7 @@ const Category = () => {
       flex: 0.5,
     },
     {
-      field: "description",
+      field: "Description",
       headerName: "Description",
       flex: 1,
     },
@@ -104,11 +107,13 @@ const Category = () => {
       field: "delete",
       headerName: "Delete",
       flex: 0.25,
-      renderCell: (params) => (
-        <IconButton onClick={() => handleDeleteModal(params.row.id)}>
-          <DeleteIcon />
-        </IconButton>
-      ),
+      renderCell: (params) => {
+        return (
+          <IconButton onClick={() => handleDeleteModal(params.row._id)}>
+            <DeleteIcon />
+          </IconButton>
+        );
+      },
     },
   ];
 

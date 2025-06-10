@@ -1,21 +1,19 @@
 import React from "react";
 import { CloseOutlined } from "@mui/icons-material";
 import { Box, IconButton, Modal, Typography, Button } from "@mui/material";
-import httpClient from "utils/apiMethods";
 import { toast } from "react-toastify";
+import { useDeleteCategoryMutation } from "state/categoryApi";
 
 const DeleteModal = ({ open, handleClose, row }) => {
+  const [deleteCategory] = useDeleteCategoryMutation();
+
   const handleDelete = async () => {
     try {
-      const response = await httpClient.delete(`/kamarket/categories/${row}`);
+      await deleteCategory(row).unwrap();
       toast.success("Category deleted successfully");
       handleClose();
     } catch (error) {
-      console.error(error.response?.data?.businessErrorDescription);
-      toast.error(
-        error.response?.data?.businessErrorDescription ||
-          "Failed to delete category"
-      );
+      toast.error(error.data?.message || "Failed to delete category");
     }
   };
 

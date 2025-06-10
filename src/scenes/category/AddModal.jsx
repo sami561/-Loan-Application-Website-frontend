@@ -7,37 +7,61 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import httpClient from "utils/apiMethods";
 import { toast } from "react-toastify";
+import { useCreateCategoryMutation } from "state/categoryApi";
 
 const formSchema = z.object({
-  name: z.string().nonempty({ message: "Name is required" }),
+  nameCategoryFr: z.string().nonempty({ message: "French name is required" }),
+  nameCategoryAr: z.string().nonempty({ message: "Arabic name is required" }),
   description: z.string().nonempty({ message: "Description is required" }),
+  image: z.any().optional(),
 });
 
 const AddModal = ({ open, handleClose }) => {
+  const [createCategory] = useCreateCategoryMutation();
+  const [selectedImage, setSelectedImage] = useState(null);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
+    setValue,
   } = useForm({
     resolver: zodResolver(formSchema),
   });
 
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+      setValue("image", file);
+    }
+  };
+
   const onSubmit = async (data) => {
     try {
-      const response = await httpClient.post("/kamarket/categories", data);
+      const formData = new FormData();
+      formData.append("nameCategoryFr", data.nameCategoryFr);
+      formData.append("nameCategoryAr", data.nameCategoryAr);
+      formData.append("Description", data.description);
+      if (data.image) {
+        formData.append("image", data.image);
+      }
+
+      await createCategory(formData).unwrap();
       toast.success("Category added successfully");
       handleClose();
+      reset();
+      setSelectedImage(null);
     } catch (error) {
-      console.error(error.response?.data?.businessErrorDescription);
+      console.error(error);
       toast.error(
-        error.response?.data?.businessErrorDescription ||
-          "Failed to add category"
+        error.data?.businessErrorDescription || "Failed to add category"
       );
     }
   };
@@ -74,12 +98,21 @@ const AddModal = ({ open, handleClose }) => {
         </Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextField
-            label="Name"
-            {...register("name")}
-            error={!!errors.name}
-            helperText={errors.name?.message}
+            label="Name (French)"
+            {...register("nameCategoryFr")}
+            error={!!errors.nameCategoryFr}
+            helperText={errors.nameCategoryFr?.message}
             fullWidth
             margin="normal"
+          />
+          <TextField
+            label="Name (Arabic)"
+            {...register("nameCategoryAr")}
+            error={!!errors.nameCategoryAr}
+            helperText={errors.nameCategoryAr?.message}
+            fullWidth
+            margin="normal"
+            dir="rtl"
           />
           <TextField
             label="Description"
@@ -91,6 +124,32 @@ const AddModal = ({ open, handleClose }) => {
             rows={4}
             margin="normal"
           />
+          <input
+            accept="image/*"
+            style={{ display: "none" }}
+            id="file-upload"
+            type="file"
+            onChange={handleImageChange}
+          />
+          <label htmlFor="file-upload">
+            <Button
+              variant="contained"
+              color="primary"
+              component="span"
+              fullWidth
+              sx={{ mt: 2 }}
+            >
+              {selectedImage ? "Change Image" : "Upload Image"}
+            </Button>
+          </label>
+          {selectedImage && (
+            <Typography variant="body2" sx={{ mt: 1 }}>
+              Selected: {selectedImage.name}
+            </Typography>
+          )}
+          {errors.image && (
+            <Typography color="error">{errors.image.message}</Typography>
+          )}
           <Button
             variant="contained"
             color="primary"

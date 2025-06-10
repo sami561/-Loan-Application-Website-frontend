@@ -18,7 +18,35 @@ export const categoryApi = createApi({
       query: () => "kamarket/category/all",
       providesTags: ["Category"],
     }),
+    createCategory: build.mutation({
+      query: (categoryData) => ({
+        url: "kamarket/category/create",
+        method: "POST",
+        body: categoryData,
+      }),
+      invalidatesTags: ["Category"],
+    }),
+    updateCategory: build.mutation({
+      query: ({ id, ...categoryData }) => ({
+        url: `kamarket/category/${id}`,
+        method: "PUT",
+        body: categoryData,
+      }),
+      invalidatesTags: ["Category"],
+    }),
+    deleteCategory: build.mutation({
+      query: (id) => ({
+        url: `kamarket/category/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Category"],
+    }),
   }),
 });
 
-export const { useGetCategoryQuery } = categoryApi;
+export const {
+  useGetCategoryQuery,
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
+} = categoryApi;

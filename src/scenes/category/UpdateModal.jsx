@@ -11,15 +11,18 @@ import React, { useEffect } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import httpClient from "utils/apiMethods";
 import { toast } from "react-toastify";
+import { useUpdateCategoryMutation } from "state/categoryApi";
 
 const formSchema = z.object({
-  name: z.string().nonempty({ message: "Name is required" }),
+  nameCategoryFr: z.string().nonempty({ message: "French name is required" }),
+  nameCategoryAr: z.string().nonempty({ message: "Arabic name is required" }),
   description: z.string().nonempty({ message: "Description is required" }),
 });
 
 const UpdateModal = ({ open, handleClose, row }) => {
+  const [updateCategory] = useUpdateCategoryMutation();
+
   const {
     register,
     handleSubmit,
@@ -31,24 +34,21 @@ const UpdateModal = ({ open, handleClose, row }) => {
 
   useEffect(() => {
     if (row) {
-      reset(row);
+      reset({
+        nameCategoryFr: row.nameCategoryFr,
+        nameCategoryAr: row.nameCategoryAr,
+        description: row.Description,
+      });
     }
   }, [row, reset]);
 
   const onSubmit = async (data) => {
     try {
-      const response = await httpClient.put(
-        `/kamarket/categories/${row.id}`,
-        data
-      );
+      await updateCategory({ id: row._id, ...data }).unwrap();
       toast.success("Category updated successfully");
       handleClose();
     } catch (error) {
-      console.error(error.response?.data?.businessErrorDescription);
-      toast.error(
-        error.response?.data?.businessErrorDescription ||
-          "Failed to update category"
-      );
+      toast.error(error.data?.message || "Failed to update category");
     }
   };
 
@@ -85,12 +85,21 @@ const UpdateModal = ({ open, handleClose, row }) => {
         {row ? (
           <form onSubmit={handleSubmit(onSubmit)}>
             <TextField
-              label="Name"
-              {...register("name")}
-              error={!!errors.name}
-              helperText={errors.name?.message}
+              label="Name (French)"
+              {...register("nameCategoryFr")}
+              error={!!errors.nameCategoryFr}
+              helperText={errors.nameCategoryFr?.message}
               fullWidth
               margin="normal"
+            />
+            <TextField
+              label="Name (Arabic)"
+              {...register("nameCategoryAr")}
+              error={!!errors.nameCategoryAr}
+              helperText={errors.nameCategoryAr?.message}
+              fullWidth
+              margin="normal"
+              dir="rtl"
             />
             <TextField
               label="Description"
