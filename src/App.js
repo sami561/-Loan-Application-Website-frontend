@@ -25,6 +25,7 @@ import CreditType from "scenes/CreditType";
 import Request from "scenes/Request";
 import User from "scenes/user/Index";
 import Manager from "scenes/manager/Index";
+import Category from "scenes/category";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -51,6 +52,10 @@ function App() {
                 element={
                   token ? <Dashboard /> : <Navigate to="/auth" replace />
                 }
+              />
+              <Route
+                path="/category"
+                element={token ? <Category /> : <Navigate to="/category" replace />}
               />
               <Route
                 path="/products"

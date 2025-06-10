@@ -18,7 +18,7 @@ export const authApi = createApi({
   endpoints: (build) => ({
     login: build.mutation({
       query: (credentials) => ({
-        url: "/kamarket/auth/login/phone",
+        url: "/kamarket/auth/login/email",
         method: "POST",
         body: credentials,
       }),
@@ -29,6 +29,21 @@ export const authApi = createApi({
           dispatch(setToken(data.token));
         } catch (error) {
           console.error("Login failed:", error);
+        }
+      },
+    }),
+    register: build.mutation({
+      query: (credentials) => ({
+        url: "/kamarket/auth/register/email",
+        method: "POST",
+        body: credentials,
+      }),
+      invalidatesTags: ["Auth"],
+      onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
+        try {
+          const { data } = await queryFulfilled;
+        } catch (error) {
+          console.error("register failed:", error);
         }
       },
     }),
@@ -45,4 +60,4 @@ export const authApi = createApi({
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation } = authApi;
+export const { useLoginMutation, useLogoutMutation ,useRegisterMutation} = authApi;

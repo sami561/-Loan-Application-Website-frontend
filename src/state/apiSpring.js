@@ -18,7 +18,15 @@ export const apiSpring = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Governorate"],
+  tagTypes: [
+    "Governorate",
+    "Bank",
+    "CreditType",
+    "Request",
+    "Admin",
+    "User",
+    "Maneger",
+  ],
   endpoints: (build) => ({
     getGovernorate: build.query({
       query: () => "api/v1/gouvernorat/all",

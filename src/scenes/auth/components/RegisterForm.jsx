@@ -4,10 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import TextInput from "./TextInput";
 import PasswordInput from "./PasswordInput";
-import { useRegisterMutation } from "state/authApi";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import httpClient from "utils/apiMethods";
+import { useRegisterMutation } from "state/authApi";
 
 const signUpSchema = z.object({
   firstName: z.string().nonempty({ message: "First name is required" }),
@@ -20,6 +19,7 @@ const signUpSchema = z.object({
 
 const useRegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [register] = useRegisterMutation();
   const navigate = useNavigate();
 
   const {
@@ -31,19 +31,24 @@ const useRegisterForm = () => {
   });
 
   const onSubmit = async (data) => {
+    setIsLoading(true);
     try {
-      console.log("data===>", data);
-      const response = await httpClient.post("/kamarket/auth/register", {
-        firstname: data.firstName,
-        lastname: data.lastName,
+      const credentials = {
+        firstName: data.firstName,
+        lastName: data.lastName,
         email: data.email,
         password: data.password,
-      });
+      };
+
+      await register(credentials).unwrap();
       toast.success("User registered successfully");
-      console.log(response);
     } catch (error) {
-      console.log(error.response?.data?.businessErrorDescription);
-      toast.error(error.response?.data?.businessErrorDescription);
+      console.error("Registration failed:", error);
+      toast.error(
+        error.data?.businessErrorDescription || "Registration failed"
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 

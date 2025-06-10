@@ -38,6 +38,7 @@ import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import CategoryIcon from "@mui/icons-material/Category";
 const navItems = [
   {
     text: "Dashboard",
@@ -49,8 +50,8 @@ const navItems = [
     icon: null,
   },
   {
-    text: "Governorate",
-    icon: <DomainIcon />,
+    text: "category",
+    icon: <CategoryIcon />,
   },
   {
     text: "Bank",
